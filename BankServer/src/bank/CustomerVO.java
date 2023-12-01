@@ -91,20 +91,22 @@ public class CustomerVO implements Serializable {
     } //일부 고객 속성에 대한 값을 설정, 반환
 
     public long getNumberofaccounts(){ return numberofaccounts;}
-    public void setNumberofaccounts() { this.numberofaccounts = accountlist.size();} //소유 계좌의 수
 
     public void addaccount(AccountVO account){ //새로운 계좌의 추가
         accountlist.add(account);
-        this.accountlist = accountlist;
     }
-    public void delaccount(AccountVO account){ //소유 계좌의 삭제
-        if(accountlist.size() == 0) accountlist.remove(0);
-        else accountlist.remove(accountlist.size() - 1);
+    public void removeaccount(AccountVO account){ //소유 계좌의 삭제
+        accountlist.remove(account);
     }
-    public void findaccount(String name ){ //특정 소유의 계좌 발견
-
+    public AccountVO findaccount(String own){ //특정 소유의 계좌 발견
+        for(AccountVO acnt : accountlist){
+            if(acnt.getAccountNo().equals(account.getAccountNo())){
+                return acnt;
+            }
+        }
+        return null;
     }
-    public void getTotalBalance(String id){ //소유계좌의 잔액의 합
+    public void getTotalBalance(AccountVO account){ //소유계좌의 잔액의 합
         for(int i = 0; i < accountlist.size(); i++){
             totalbalance += account.getBalance();
         }
