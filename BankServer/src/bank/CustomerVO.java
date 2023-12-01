@@ -23,9 +23,9 @@ public class CustomerVO implements Serializable {
     private String address;
     private String phone;
     private AccountVO account;
-    private LinkedList<AccountVO> accountlist = new LinkedList<>();
+    private ArrayList<AccountVO> accountlist;
     private long totalbalance;
-    private long numberofaccounts;
+
     public CustomerVO() {
     }
 
@@ -40,6 +40,7 @@ public class CustomerVO implements Serializable {
         this.name = name;
         this.password = password;
         this.account = account;
+        this.accountlist = new ArrayList<>();
     }
 
     public String getId() {
@@ -90,7 +91,7 @@ public class CustomerVO implements Serializable {
         this.account = account;
     } //일부 고객 속성에 대한 값을 설정, 반환
 
-    public long getNumberofaccounts(){ return numberofaccounts;}
+    public long getNumberofaccounts(){ return accountlist.size();}
 
     public void addaccount(AccountVO account){ //새로운 계좌의 추가
         accountlist.add(account);
@@ -99,18 +100,18 @@ public class CustomerVO implements Serializable {
         accountlist.remove(account);
     }
     public AccountVO findaccount(String own){ //특정 소유의 계좌 발견
-        for(AccountVO acnt : accountlist){
-            if(acnt.getAccountNo().equals(account.getAccountNo())){
-                return acnt;
+        for(AccountVO accountVO : accountlist){
+            if(accountVO.getOwner().equals(own)){
+                return accountVO;
             }
         }
         return null;
     }
-    public void getTotalBalance(AccountVO account){ //소유계좌의 잔액의 합
-        for(int i = 0; i < accountlist.size(); i++){
-            totalbalance += account.getBalance();
+    public long getTotalBalance(AccountVO account){ //소유계좌의 잔액의 합
+        for(AccountVO accountVO : accountlist){
+            totalbalance += accountVO.getBalance();
         }
-        this.totalbalance = totalbalance;
+        return totalbalance;
     }
     @Override
     public String toString() {

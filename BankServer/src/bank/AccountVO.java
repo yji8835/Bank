@@ -21,6 +21,7 @@ public class AccountVO implements Serializable {
     private AccountType type;
     private long balance;
     private Date openDate;
+
     public AccountVO() {
     }
 
