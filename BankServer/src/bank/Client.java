@@ -222,12 +222,62 @@ public class Client {
     //*******************************************************************
     private synchronized void withdraw(CommandDTO commandDTO) {
         CustomerVO user = this.customerList.stream().filter(customerVO -> Objects.equals(customerVO.getAccount().getAccountNo(), commandDTO.getUserAccountNo())).findFirst().get();
-        if (user.getAccount().getBalance() < commandDTO.getAmount()) {
+
+        /*if (user.getAccount().getBalance() < commandDTO.getAmount()) {
             commandDTO.setResponseType(ResponseType.INSUFFICIENT);
         } else {
             commandDTO.setResponseType(ResponseType.SUCCESS);
             user.getAccount().setBalance(user.getAccount().getBalance() - commandDTO.getAmount());
             handler.displayInfo(user.getName() + "님이 " + user.getAccount().getAccountNo() + " 계좌에서 " + commandDTO.getAmount() + "원 출금하였습니다.");
+        }*/
+
+        /*if (user.getAccount().getType()==== AccountType.CHECKING) {
+            CheckingAccount account = user.getAccount();
+        }*/
+
+
+        if (user.getAccount().getType() == AccountType.CHECKING) {
+
+            CheckingAccount account = (CheckingAccount)user.getAccount();
+
+            long requestedAmount = commandDTO.getAmount(); //출금 금액
+            long checkingBalance = account.getBalance(); //계좌 잔액
+
+            if (checkingBalance >= requestedAmount) { //계좌 내에서 출금 가능한 경우
+                account.setBalance(checkingBalance - requestedAmount);
+                commandDTO.setResponseType(ResponseType.SUCCESS);
+                handler.displayInfo(user.getName() + "님이 " + account.getAccountNo() + " 계좌에서 " + requestedAmount + "원 출금하였습니다.");
+            } else { // 출금이 불가능한 경우
+
+                // Checking 계좌의 부족한 금액 계산
+                long insufficientAmount = requestedAmount - checkingBalance;
+                // LinkedSavings 계좌에서 최대 이체 가능한 금액 확인
+                long maxTransferAmount = account.getLinkedSavings().getMaxTransferAmountToChecking();
+
+                if (maxTransferAmount >= insufficientAmount) {
+                    // LinkedSavings에서 자동 이체가능한 경우
+                    //account.getLinkedSavings().transferToChecking(insufficientAmount);
+                    account.getLinkedSavings().setMaxTransferAmountToChecking(maxTransferAmount-insufficientAmount);
+                    account.getLinkedSavings().setBalance(maxTransferAmount-insufficientAmount);
+
+                    account.setBalance(0);
+                    commandDTO.setResponseType(ResponseType.SUCCESS);
+                    handler.displayInfo(user.getName() + "님이 " + account.getAccountNo() + " 계좌에서 " + requestedAmount + "원 출금하였습니다. LinkedSavings에서 " + insufficientAmount + "원을 이체하여 보충했습니다.");
+                } else {
+                    // LinkedSavings에서 충당 가능한 금액이 부족한 경우
+                    commandDTO.setResponseType(ResponseType.INSUFFICIENT);
+                }
+            }
+        } else {
+            AccountVO account = user.getAccount();
+            // Checking 계좌가 아닌 경우 다른 처리 로직
+            if (user.getAccount().getBalance() < commandDTO.getAmount()) {
+                commandDTO.setResponseType(ResponseType.INSUFFICIENT);
+            } else {
+                commandDTO.setResponseType(ResponseType.SUCCESS);
+                user.getAccount().setBalance(user.getAccount().getBalance() - commandDTO.getAmount());
+                handler.displayInfo(user.getName() + "님이 " + user.getAccount().getAccountNo() + " 계좌에서 " + commandDTO.getAmount() + "원 출금하였습니다.");
+            }
         }
         send(commandDTO);
     }
