@@ -2,6 +2,7 @@ package bank;
 
 import common.CommandDTO;
 import common.ResponseType;
+import common.AccountType;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -258,7 +259,7 @@ public class Client {
                     // LinkedSavings에서 자동 이체가능한 경우
                     //account.getLinkedSavings().transferToChecking(insufficientAmount);
                     account.getLinkedSavings().setMaxTransferAmountToChecking(maxTransferAmount-insufficientAmount);
-                    account.getLinkedSavings().setBalance(maxTransferAmount-insufficientAmount);
+                    //account.getLinkedSavings().setBalance(maxTransferAmount-insufficientAmount);
 
                     account.setBalance(0);
                     commandDTO.setResponseType(ResponseType.SUCCESS);

@@ -28,7 +28,7 @@ public class CheckingAccount extends AccountVO {
                 ", type=" + getType() +
                 ", balance=" + getBalance() +
                 ", openDate=" + getOpenDate() +
-                ", linkedSavings=" + (linkedSavings != null ? linkedSavings.getAccountNo() : "None") +
+                ", linkedSavings=" + (linkedSavings != null ? linkedSavings : "None") +
                 '}';
     }
 

@@ -19,6 +19,13 @@ public class SavingsAccount extends Account{ //저축예금계좌
         this.InterestRate = inter;
         this.MaxTransferAmountToChecking = maxtransfer;
     }
+
+    public long getMaxTransferAmountToChecking() {
+        return MaxTransferAmountToChecking;
+    }
+    public void setMaxTransferAmountToChecking(long linkedSavings) {
+        this.MaxTransferAmountToChecking = MaxTransferAmountToChecking;
+    }
     @Override
     public String display(AccountVO account) {
         if(this.InterestRate != 0){
