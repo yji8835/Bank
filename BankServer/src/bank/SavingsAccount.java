@@ -7,10 +7,10 @@ abstract class Account{
 
 }
 
-public class SavingsAccount extends Account{ //저축예금계좌
+public class SavingsAccount extends AccountVO{ //저축예금계좌
     private double InterestRate;
     private long MaxTransferAmountToChecking;
-    private AccountVO account;
+    public AccountVO account;
 
     public SavingsAccount(){
     }
@@ -19,6 +19,13 @@ public class SavingsAccount extends Account{ //저축예금계좌
         this.InterestRate = inter;
         this.MaxTransferAmountToChecking = maxtransfer;
     }
+    public AccountVO getAccount() {
+        return account;
+    }
+    public double getInterestRater() {
+        return InterestRate;
+    }
+
 
     public long getMaxTransferAmountToChecking() {
         return MaxTransferAmountToChecking;
@@ -26,11 +33,17 @@ public class SavingsAccount extends Account{ //저축예금계좌
     public void setMaxTransferAmountToChecking(long linkedSavings) {
         this.MaxTransferAmountToChecking = MaxTransferAmountToChecking;
     }
+
     @Override
-    public String display(AccountVO account) {
-        if(this.InterestRate != 0){
-            return account.getOwner() + " " + InterestRate +" " + account.getType();
-        }
-        return null;
+    public String toString() {
+        return "SavingsAccount{" +
+                "account='" + account + '\'' +
+                ", InterestRate=" + InterestRate +
+                ", MaxTransferAmountToChecking=" + MaxTransferAmountToChecking +
+                '}';
+    }
+
+    public void display() {
+        System.out.println(toString());
     }
 }

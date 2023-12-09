@@ -9,10 +9,15 @@ import java.sql.Date;
 public class CheckingAccount extends AccountVO {
 
     private SavingsAccount linkedSavings;
-    public CheckingAccount(String owner, String accountNo, long balance, Date openDate) {
-        super(owner, accountNo, AccountType.CHECKING, balance, openDate);
-    }
+    AccountVO account;
 
+    public  CheckingAccount(AccountVO account, SavingsAccount linkedSavings) {
+        this.account = account;
+        this.linkedSavings = linkedSavings;
+    }
+    public AccountVO getAccount() {
+        return account;
+    }
     public SavingsAccount getLinkedSavings() {
         return linkedSavings;
     }
@@ -23,11 +28,7 @@ public class CheckingAccount extends AccountVO {
     @Override
     public String toString() {
         return "CheckingAccount{" +
-                "owner='" + getOwner() + '\'' +
-                ", accountNo='" + getAccountNo() + '\'' +
-                ", type=" + getType() +
-                ", balance=" + getBalance() +
-                ", openDate=" + getOpenDate() +
+                "account" + account +
                 ", linkedSavings=" + (linkedSavings != null ? linkedSavings : "None") +
                 '}';
     }

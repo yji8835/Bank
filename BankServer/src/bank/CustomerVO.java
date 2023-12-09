@@ -93,6 +93,9 @@ public class CustomerVO implements Serializable {
 
     public long getNumberofaccounts(){ return accountlist.size();}
 
+    public ArrayList<AccountVO> getAccountlist() {
+        return  accountlist;
+    }
     public void addaccount(AccountVO account){ //새로운 계좌의 추가
         accountlist.add(account);
     }
@@ -122,6 +125,7 @@ public class CustomerVO implements Serializable {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", account=" + account +
+                ", accountlist=" + accountlist +
                 '}';
     }
 }

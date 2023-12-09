@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/Bank.iml" filepath="$PROJECT_DIR$/Bank.iml" />
       <module fileurl="file://$PROJECT_DIR$/BankATM/BankATM.iml" filepath="$PROJECT_DIR$/BankATM/BankATM.iml" />
       <module fileurl="file://$PROJECT_DIR$/BankServer/BankServer.iml" filepath="$PROJECT_DIR$/BankServer/BankServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/termProject/termProject.iml" filepath="$PROJECT_DIR$/termProject/termProject.iml" />
     </modules>
   </component>
 </project>

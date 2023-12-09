@@ -27,8 +27,8 @@ import java.util.concurrent.Executors;
 //*******************************************************************
 // Name : ServerMain
 // Type : Class
-// Description :  BankServerÀÇ GUI ÇÁ·¹ÀÓÀÌ¸ç, ATM°úÀÇ ¼ÒÄÏÅë½ÅÀ» ´ã´çÇÑ´Ù.
-//                °èÁÂ Á¤º¸µéÀ» º¸À¯ÇÏ°í ÀÖÀ¸¸ç, °ü·Ã ±â´ÉµéÀ» °¡Áö°í ÀÖ´Ù.
+// Description :  BankServerì˜ GUI í”„ë ˆì„ì´ë©°, ATMê³¼ì˜ ì†Œì¼“í†µì‹ ì„ ë‹´ë‹¹í•œë‹¤.
+//                ê³„ì¢Œ ì •ë³´ë“¤ì„ ë³´ìœ í•˜ê³  ìˆìœ¼ë©°, ê´€ë ¨ ê¸°ëŠ¥ë“¤ì„ ê°€ì§€ê³  ìˆë‹¤.
 //*******************************************************************
 
 class ServerMain
@@ -52,9 +52,9 @@ class ServerMain
     // # 51-01
     //*******************************************************************
     // Name : ServerMain()
-    // Type : »ı¼ºÀÚ
-    // Description :  ServerMain ClassÀÇ »ı¼ºÀÚ·Î¼­ °èÁÂ Á¤º¸¸¦ Load ÇÏ°í, GUI¸¦ ÃÊ±âÈ­ ÇÑ´Ù.
-    //                °èÁÂ Á¤º¸´Â ./Account.txt¿¡ ÀúÀåÇÏ¸ç Server ½ÇÇà½Ã Load, Á¾·á½Ã Save µ¿ÀÛÀ» ÇÑ´Ù
+    // Type : ìƒì„±ì
+    // Description :  ServerMain Classì˜ ìƒì„±ìë¡œì„œ ê³„ì¢Œ ì •ë³´ë¥¼ Load í•˜ê³ , GUIë¥¼ ì´ˆê¸°í™” í•œë‹¤.
+    //                ê³„ì¢Œ ì •ë³´ëŠ” ./Account.txtì— ì €ì¥í•˜ë©° Server ì‹¤í–‰ì‹œ Load, ì¢…ë£Œì‹œ Save ë™ì‘ì„ í•œë‹¤
     //*******************************************************************
     public ServerMain()
     {
@@ -63,11 +63,11 @@ class ServerMain
         customerList = ReadCustomerFile("./Account.txt");
         setVisible(true);
 
-        // WindowListener Ãß°¡
+        // WindowListener ì¶”ê°€
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                // ÇÁ·¹ÀÓÀÌ Á¾·áµÉ ¶§ SaveCustomerFile ¸Ş¼­µå È£Ãâ
+                // í”„ë ˆì„ì´ ì¢…ë£Œë  ë•Œ SaveCustomerFile ë©”ì„œë“œ í˜¸ì¶œ
                 SaveCustomerFile(customerList, "./Account.txt");
             }
         });
@@ -79,14 +79,14 @@ class ServerMain
     //*******************************************************************
     // Name : GetDefaultCustomers()
     // Type : Method
-    // Description :  Server ½ÃÀÛ ½Ã ÀúÀåµÈ °èÁÂ Á¤º¸°¡ ¾øÀ¸¸é Default °èÁÂ¸¦ »ı¼ºÇÏ´Â ±â´É
+    // Description :  Server ì‹œì‘ ì‹œ ì €ì¥ëœ ê³„ì¢Œ ì •ë³´ê°€ ì—†ìœ¼ë©´ Default ê³„ì¢Œë¥¼ ìƒì„±í•˜ëŠ” ê¸°ëŠ¥
     //*******************************************************************
     private static List<CustomerVO> GetDefaultCustomers() {
         List<CustomerVO> customerList = new Vector<>();
-        customerList.add(new CustomerVO("202300001","±¤¼ö","202300001", new AccountVO("±¤¼ö", "202300001", AccountType.CHECKING, 100_000_000, Date.valueOf(LocalDate.now()))));
-        customerList.add(new CustomerVO("202300002","¿µÃ¶","202300002", new AccountVO("¿µÃ¶", "202300002", AccountType.CHECKING, 10_000_000, Date.valueOf(LocalDate.now()))));
-        customerList.add(new CustomerVO("202300003","¿µ¼÷","202300003", new AccountVO("¿µ¼÷", "202300003", AccountType.CHECKING, 5_000_000, Date.valueOf(LocalDate.now()))));
-        customerList.add(new CustomerVO("202300004","¿Á¼ø","202300004", new AccountVO("¿Á¼ø", "202300004", AccountType.CHECKING, 1_000_000, Date.valueOf(LocalDate.now()))));
+        customerList.add(new CustomerVO("202300001","ê´‘ìˆ˜","202300001", new AccountVO("ê´‘ìˆ˜", "202300001", AccountType.CHECKING, 100_000_000, Date.valueOf(LocalDate.now()))));
+        customerList.add(new CustomerVO("202300002","ì˜ì² ","202300002", new AccountVO("ì˜ì² ", "202300002", AccountType.CHECKING, 10_000_000, Date.valueOf(LocalDate.now()))));
+        customerList.add(new CustomerVO("202300003","ì˜ìˆ™","202300003", new AccountVO("ì˜ìˆ™", "202300003", AccountType.CHECKING, 5_000_000, Date.valueOf(LocalDate.now()))));
+        customerList.add(new CustomerVO("202300004","ì˜¥ìˆœ","202300004", new AccountVO("ì˜¥ìˆœ", "202300004", AccountType.CHECKING, 1_000_000, Date.valueOf(LocalDate.now()))));
         return customerList;
     }
 
@@ -96,7 +96,7 @@ class ServerMain
     //*******************************************************************
     // Name : SaveCustomerFile()
     // Type : Method
-    // Description :  ÇöÀç±îÁöÀÇ °èÁÂ Á¤º¸¸¦ txt ÆÄÀÏ·Î ÀúÀåÇÏ´Â ±â´É
+    // Description :  í˜„ì¬ê¹Œì§€ì˜ ê³„ì¢Œ ì •ë³´ë¥¼ txt íŒŒì¼ë¡œ ì €ì¥í•˜ëŠ” ê¸°ëŠ¥
     //*******************************************************************
     public void SaveCustomerFile(List<CustomerVO> customers, String filePath)
     {
@@ -115,7 +115,7 @@ class ServerMain
     //*******************************************************************
     // Name : SaveCustomerFile()
     // Type : Method
-    // Description :  txt ÆÄÀÏ·Î ÀúÀåµÈ °èÁÂ Á¤º¸¸¦ Load ÇÏ´Â ±â´É
+    // Description :  txt íŒŒì¼ë¡œ ì €ì¥ëœ ê³„ì¢Œ ì •ë³´ë¥¼ Load í•˜ëŠ” ê¸°ëŠ¥
     //*******************************************************************
     public List<CustomerVO> ReadCustomerFile(String filePath)
     {
@@ -127,7 +127,7 @@ class ServerMain
         }
         catch (IOException | ClassNotFoundException e)
         {
-            // ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ» ¶§ ÃÊ±â µ¥ÀÌÅÍ·Î ¸®½ºÆ®¸¦ ÃÊ±âÈ­
+            // íŒŒì¼ì´ ì¡´ì¬í•˜ì§€ ì•Šì„ ë•Œ ì´ˆê¸° ë°ì´í„°ë¡œ ë¦¬ìŠ¤íŠ¸ë¥¼ ì´ˆê¸°í™”
             System.out.println("File not found. Initializing with default data.");
             List<CustomerVO> defaultCustomers = GetDefaultCustomers();
             SaveCustomerFile(defaultCustomers, filePath);
@@ -140,12 +140,12 @@ class ServerMain
     //*******************************************************************
     // Name : InitGui
     // Type : Method
-    // Description :  ServerMain ClassÀÇ GUI ÄÄÆ÷³ÍÆ®¸¦ ÇÒ´çÇÏ°í ÃÊ±âÈ­ ÇÑ´Ù.
-    //                ServerMain FrameÀº ¼­¹ö ½ÃÀÛ ¹öÆ° ¹× ÅØ½ºÆ® Ã¢ ÃÊ±âÈ­ ¹öÆ°À» °¡Áö°í ÀÖ´Ù
+    // Description :  ServerMain Classì˜ GUI ì»´í¬ë„ŒíŠ¸ë¥¼ í• ë‹¹í•˜ê³  ì´ˆê¸°í™” í•œë‹¤.
+    //                ServerMain Frameì€ ì„œë²„ ì‹œì‘ ë²„íŠ¼ ë° í…ìŠ¤íŠ¸ ì°½ ì´ˆê¸°í™” ë²„íŠ¼ì„ ê°€ì§€ê³  ìˆë‹¤
     //*******************************************************************
     private void InitGui()
     {
-        setTitle("¼­¹ö GUI");
+        setTitle("ì„œë²„ GUI");
         setSize(480, 320);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -156,7 +156,7 @@ class ServerMain
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        Label_UserCount = new JLabel("ÇöÀç À¯Àú ¼ö: ");
+        Label_UserCount = new JLabel("í˜„ì¬ ìœ ì € ìˆ˜: ");
         topPanel.add(Label_UserCount);
 
         Label_UserCount_2 = new JLabel("0");
@@ -172,11 +172,11 @@ class ServerMain
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        Btn_StartStop = new JToggleButton("½ÃÀÛ");
+        Btn_StartStop = new JToggleButton("ì‹œì‘");
         Btn_StartStop.addActionListener(this);
         bottomPanel.add(Btn_StartStop);
 
-        Btn_Reset = new JButton("ÅØ½ºÆ® Ã¢ ÃÊ±âÈ­");
+        Btn_Reset = new JButton("í…ìŠ¤íŠ¸ ì°½ ì´ˆê¸°í™”");
         Btn_Reset.addActionListener(this);
         bottomPanel.add(Btn_Reset);
 
@@ -194,8 +194,8 @@ class ServerMain
     //*******************************************************************
     // Name : actionPerformed
     // Type : Listener
-    // Description :  ServerMain FrameÀÇ ¹öÆ° ÄÄÆ÷³ÍÆ®µéÀÇ µ¿ÀÛÀ» ±¸ÇöÇÑ ºÎºĞ
-    //                ¾Æ·¡ ÄÚµå¿¡¼­´Â ¼­¹ö Start/Stop Åä±Û ¹öÆ° ±â´É ¹× ÅØ½ºÆ®Ã¢ ÃÊ±âÈ­ ¹öÆ°±â´ÉÀÌ ±¸Çö µÇ¾î ÀÖ´Ù.
+    // Description :  ServerMain Frameì˜ ë²„íŠ¼ ì»´í¬ë„ŒíŠ¸ë“¤ì˜ ë™ì‘ì„ êµ¬í˜„í•œ ë¶€ë¶„
+    //                ì•„ë˜ ì½”ë“œì—ì„œëŠ” ì„œë²„ Start/Stop í† ê¸€ ë²„íŠ¼ ê¸°ëŠ¥ ë° í…ìŠ¤íŠ¸ì°½ ì´ˆê¸°í™” ë²„íŠ¼ê¸°ëŠ¥ì´ êµ¬í˜„ ë˜ì–´ ìˆë‹¤.
     //*******************************************************************
     public void actionPerformed(ActionEvent e)
     {
@@ -212,7 +212,7 @@ class ServerMain
 
         else if (e.getSource() == Btn_Reset)
         {
-           // TextArea_Log.removeAll();
+            // TextArea_Log.removeAll();
             TextArea_Log.setText(null);
         }
     }
@@ -225,8 +225,8 @@ class ServerMain
     //*******************************************************************
     // Name : startServer
     // Type : Method
-    // Description :  ¼­¹ö ¼ÒÄÏÀ» port 5001 ·Î bind ÇÏ¿© open ÇÏ´Â ±â´É ¹×
-    //                Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏÀÇ Á¢¼Ó ½Ãµµ½Ã accept ÇÏ¿© ¿¬°á ½ÃÅ°´Â ±â´ÉÀÌ ±¸Çö µÇ¾î ÀÖ´Ù.
+    // Description :  ì„œë²„ ì†Œì¼“ì„ port 5001 ë¡œ bind í•˜ì—¬ open í•˜ëŠ” ê¸°ëŠ¥ ë°
+    //                í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ì˜ ì ‘ì† ì‹œë„ì‹œ accept í•˜ì—¬ ì—°ê²° ì‹œí‚¤ëŠ” ê¸°ëŠ¥ì´ êµ¬í˜„ ë˜ì–´ ìˆë‹¤.
     //*******************************************************************
     public void startServer()
     {
@@ -237,8 +237,8 @@ class ServerMain
             serverSocketChannel.bind(new InetSocketAddress(5001));
             SwingUtilities.invokeLater(() ->
             {
-                addMsg("¼­¹ö ½ÃÀÛ");
-                Btn_StartStop.setText("Á¤Áö");
+                addMsg("ì„œë²„ ì‹œì‘");
+                Btn_StartStop.setText("ì •ì§€");
             });
             serverSocketChannel.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>()
             {
@@ -247,7 +247,7 @@ class ServerMain
                 {
                     try
                     {
-                        addMsg(socketChannel.getRemoteAddress() + " Á¢¼Ó");
+                        addMsg(socketChannel.getRemoteAddress() + " ì ‘ì†");
                     }
                     catch (IOException e)
                     {
@@ -256,7 +256,7 @@ class ServerMain
 
                     Client client = new Client(socketChannel, ServerMain.this, customerList);
                     clientList.add(client);
-                    // ÇöÀç Á¢¼ÓÀÚ¼ö ¾÷µ¥ÀÌÆ®
+                    // í˜„ì¬ ì ‘ì†ììˆ˜ ì—…ë°ì´íŠ¸
                     SwingUtilities.invokeLater(() -> Label_UserCount_2.setText(String.valueOf(clientList.size())));
                     serverSocketChannel.accept(null, this);
                 }
@@ -285,7 +285,7 @@ class ServerMain
     //*******************************************************************
     // Name : stopServer
     // Type : Method
-    // Description :  ¼­¹ö ¼ÒÄÏÀ» ¿¬°á ÇØÁ¦ ÇÏ´Â ±â´É
+    // Description :  ì„œë²„ ì†Œì¼“ì„ ì—°ê²° í•´ì œ í•˜ëŠ” ê¸°ëŠ¥
     //*******************************************************************
     public void stopServer()
     {
@@ -304,8 +304,8 @@ class ServerMain
             {
                 SwingUtilities.invokeLater(() ->
                 {
-                    addMsg("¼­¹ö Á¤Áö");
-                    Btn_StartStop.setText("½ÃÀÛ");
+                    addMsg("ì„œë²„ ì •ì§€");
+                    Btn_StartStop.setText("ì‹œì‘");
                 });
             }
         }
@@ -317,15 +317,15 @@ class ServerMain
     //*******************************************************************
     // Name : removeClient()
     // Type : Method
-    // Description :  Å¬¶óÀÌ¾ğÆ® ¼ÒÄÏÀÌ ÇØÁ¦ µÇ¾úÀ» ¶§
-    //                ServerMain ÀÇ clientList ¸®½ºÆ® ¿¡¼­ ÇØ´ç ÀÎµ¦½ºÀ» Á¦°ÅÇÏ´Â ±â´É
+    // Description :  í´ë¼ì´ì–¸íŠ¸ ì†Œì¼“ì´ í•´ì œ ë˜ì—ˆì„ ë•Œ
+    //                ServerMain ì˜ clientList ë¦¬ìŠ¤íŠ¸ ì—ì„œ í•´ë‹¹ ì¸ë±ìŠ¤ì„ ì œê±°í•˜ëŠ” ê¸°ëŠ¥
     //*******************************************************************
     @Override
     public void removeClient(Client client)
     {
         clientList.remove(client);
-        addMsg(client + "Á¦°ÅµÊ");
-        // ÇöÀç Á¢¼ÓÀÚ¼ö ¾÷µ¥ÀÌÆ®
+        addMsg(client + "ì œê±°ë¨");
+        // í˜„ì¬ ì ‘ì†ììˆ˜ ì—…ë°ì´íŠ¸
         SwingUtilities.invokeLater(() -> Label_UserCount_2.setText(String.valueOf(clientList.size())));
     }
 
@@ -344,4 +344,3 @@ class ServerMain
         ServerMain f = new ServerMain();
     }
 }
-
