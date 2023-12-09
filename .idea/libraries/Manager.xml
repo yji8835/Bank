@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Manager">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/termProject/out/production/termProject/Manager.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
