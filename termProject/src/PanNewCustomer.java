@@ -1,6 +1,15 @@
+import bank.AccountVO;
+import bank.CustomerVO;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 public class PanNewCustomer extends JPanel implements ActionListener
 {
@@ -9,7 +18,14 @@ public class PanNewCustomer extends JPanel implements ActionListener
 
     private JButton Btn_Regi;
     private JButton Btn_Close;
-
+    private String name;
+    private String id;
+    private String password;
+    private String phone;
+    private String address;
+    private AccountVO accountVO;
+    private List<CustomerVO> customerList;
+    private ArrayList<AccountVO> accountlist;
     ManagerMain MainFrame;
     public PanNewCustomer(ManagerMain parent)
     {
@@ -86,6 +102,55 @@ public class PanNewCustomer extends JPanel implements ActionListener
         if (e.getSource() == Btn_Close) {
             this.setVisible(false);
             MainFrame.display("Main");
+        } else if (e.getSource() == Btn_Regi) {
+            add_customer();
+        }
+    }
+    private void add_customer(){
+        customerList = ReadCustomerFile("./Account.txt");
+        name = Text_CustomerName.getText();
+        id = Text_ID.getText();
+        password = Text_PassWord.getText();
+        phone = Text_PhoneNum.getText();
+        address = Text_Address.getText();
+
+
+    }
+
+    public List<CustomerVO> ReadCustomerFile(String filePath)
+    {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./Account.txt")))
+        {
+            List<CustomerVO> customers = (List<CustomerVO>) ois.readObject();
+            System.out.println("Objects read from " + filePath);
+            return customers;
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            System.out.println("File not found. read x");
+            return null;
+        }
+    }
+
+    private void savedefaultlist() {
+        List<CustomerVO> defaultlist = new Vector<>();
+        defaultlist.add(new CustomerVO("202300001","광수","202300001", new AccountVO("광수", "202300001", common.AccountType.CHECKING, 100_000_000, Date.valueOf(LocalDate.now()))));
+        defaultlist.add(new CustomerVO("202300002","영철","202300002", new AccountVO("영철", "202300002", common.AccountType.CHECKING, 10_000_000, Date.valueOf(LocalDate.now()))));
+        defaultlist.add(new CustomerVO("202300003","영숙","202300003", new AccountVO("영숙", "202300003", common.AccountType.CHECKING, 5_000_000, Date.valueOf(LocalDate.now()))));
+        defaultlist.add(new CustomerVO("202300004","옥순","202300004", new AccountVO("옥순", "202300004", common.AccountType.CHECKING, 1_000_000, Date.valueOf(LocalDate.now()))));
+
+
+        SaveCustomerFile(defaultlist, "./Account.txt");
+    }
+
+    public void SaveCustomerFile(List<CustomerVO> customers, String filePath)
+    {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath)))
+        {
+            oos.writeObject(customers);
+            System.out.println("Objects saved to " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

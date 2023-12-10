@@ -98,6 +98,7 @@ public class PanDelCustomer  extends JPanel implements ActionListener
          id = Text_ID.getText();
          password = Text_PassWord.getText();
          phone = Text_PhoneNum.getText();
+
         Iterator<CustomerVO> iterator = customerList.iterator();
         while (iterator.hasNext()) {
             CustomerVO customer = iterator.next();
