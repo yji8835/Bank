@@ -157,6 +157,9 @@ public class PanViewCustomer  extends JPanel implements ActionListener
         } else if (e.getSource() == Btn_Return) {
             block_result();
             display_search();
+            Text_ID.setText("");
+            Text_CustomerName.setText("");
+            Text_PassWord.setText("");
         }
     }
     private void block_search(){
