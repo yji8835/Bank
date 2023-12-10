@@ -17,7 +17,8 @@ import bank.CustomerVO;
 import bank.SavingsAccount;
 import common.AccountType;
 
-public class PanViewAccount extends JPanel implements ActionListener
+public class
+PanViewAccount extends JPanel implements ActionListener
 {
     private JLabel Label_CustomerName, Label_Account, Label_type, Label_balance, Label_InterestRate, Label_linkedSavings;
     private  JTextField Text_CustomerName, Text_Account, Text_type, Text_balance, Text_InterestRate, Text_linkedSavings;
