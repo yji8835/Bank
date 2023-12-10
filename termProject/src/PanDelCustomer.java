@@ -1,15 +1,25 @@
+import bank.CustomerVO;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.util.Iterator;
+import java.util.List;
 
 public class PanDelCustomer  extends JPanel implements ActionListener
 {
     private JLabel Label_CustomerName, Label_ID, Label_PassWord, Label_PhoneNum;
-    private  JTextField Text_CustomerName, Text_ID, Text_PassWord, Text_PhoneNum;
+    private  JTextField Text_CustomerName, Text_ID, Text_PhoneNum;
+    private JPasswordField Text_PassWord;
 
     private JButton Btn_Del;
     private JButton Btn_Close;
-
+    private List<CustomerVO> customerList;
+    private String name;
+    private String id;
+    private String password;
+    private String phone;
     ManagerMain MainFrame;
     public PanDelCustomer(ManagerMain parent)
     {
@@ -47,7 +57,7 @@ public class PanDelCustomer  extends JPanel implements ActionListener
         Label_PassWord.setHorizontalAlignment(JLabel.LEFT);
         add(Label_PassWord);
 
-        Text_PassWord = new JTextField();
+        Text_PassWord = new JPasswordField();
         Text_PassWord.setBounds(100,130,350,20);
         Text_PassWord.setEditable(true);
         add(Text_PassWord);
@@ -77,6 +87,54 @@ public class PanDelCustomer  extends JPanel implements ActionListener
         if (e.getSource() == Btn_Close) {
             this.setVisible(false);
             MainFrame.display("Main");
+        } else if (e.getSource() == Btn_Del) {
+            delecustomer();
+        }
+    }
+    public void delecustomer(){
+        customerList = ReadCustomerFile("./Account.txt");
+
+         name = Text_CustomerName.getText();
+         id = Text_ID.getText();
+         password = Text_PassWord.getText();
+         phone = Text_PhoneNum.getText();
+        Iterator<CustomerVO> iterator = customerList.iterator();
+        while (iterator.hasNext()) {
+            CustomerVO customer = iterator.next();
+            if (customer.getName().equals(name) &&
+                    customer.getId().equals(id) &&
+                    customer.getPassword().equals(password) ||
+                    customer.getPhone().equals(phone)) {
+                iterator.remove();
+                System.out.println("Customer removed: " + customer);
+                break;  // Assuming you want to remove only one matching customer
+            }
+        }
+         SaveCustomerFile(customerList,"./Account.txt");
+    }
+    public List<CustomerVO> ReadCustomerFile(String filePath)
+    {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./Account.txt")))
+        {
+            List<CustomerVO> customers = (List<CustomerVO>) ois.readObject();
+            System.out.println("Objects read from " + filePath);
+            return customers;
+        }
+        catch (IOException | ClassNotFoundException e)
+        {
+            System.out.println("File not found.");
+            return null;
+        }
+    }
+
+    public void SaveCustomerFile(List<CustomerVO> customers, String filePath)
+    {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath)))
+        {
+            oos.writeObject(customers);
+            System.out.println("Objects saved to " + filePath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
