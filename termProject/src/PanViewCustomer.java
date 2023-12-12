@@ -37,7 +37,7 @@ public class PanViewCustomer  extends JPanel implements ActionListener
     }
     public List<CustomerVO> ReadCustomerFile(String filePath)
     {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./Account.txt")))
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath)))
         {
             List<CustomerVO> customers = (List<CustomerVO>) ois.readObject();
             System.out.println("Objects read from " + filePath);
@@ -46,6 +46,7 @@ public class PanViewCustomer  extends JPanel implements ActionListener
         catch (IOException | ClassNotFoundException e)
         {
             // 파일이 존재하지 않을 때 초기 데이터로 리스트를 초기화
+
             System.out.println("File not found. Initializing with default data.");
             return null;
         }
@@ -146,13 +147,14 @@ public class PanViewCustomer  extends JPanel implements ActionListener
 
         } else if (e.getSource() == Btn_View) {
             customerList = ReadCustomerFile("./Account.txt");
+            System.out.println(customerList);
             name = Text_CustomerName.getText();
             id = Text_ID.getText();
             password = Text_PassWord.getText();
 
             block_search();
-            view_customer();
             display_result();
+            view_customer();
 
         } else if (e.getSource() == Btn_Return) {
             block_result();
@@ -166,10 +168,16 @@ public class PanViewCustomer  extends JPanel implements ActionListener
         Btn_View.setVisible(false);
     }
     private void display_search(){
-
+        Text_ID.setEditable(true);
+        Text_CustomerName.setEditable(true);
+        Text_PassWord.setEditable(true);
         Btn_View.setVisible(true);
     }
     private void display_result(){
+        Text_ID.setEditable(false);
+        Text_CustomerName.setEditable(false);
+        Text_PassWord.setEditable(false);
+
         Label_Phone.setVisible(true);
         Label_Address.setVisible(true);
         Text_Address.setVisible(true);
@@ -204,6 +212,7 @@ public class PanViewCustomer  extends JPanel implements ActionListener
                 }else {
                     Text_Address.setText(customerList.get(i).getAddress());
                 }
+
                 for (AccountVO account : Accountlist) {
                     accountbox.addItem(account); // Assuming AccountVO has a meaningful toString method
                 }

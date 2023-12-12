@@ -262,6 +262,7 @@ PanViewAccount extends JPanel implements ActionListener
             if(customerList.get(i).getId().equals(name)) {
                 System.out.println("1");
                 accountlist = customerList.get(i).getAccountlist();
+                System.out.println(customerList.get(i).getAccountlist());
             }
         }
         for (AccountVO account : accountlist) {

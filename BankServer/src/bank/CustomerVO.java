@@ -28,7 +28,13 @@ public class CustomerVO implements Serializable {
 
     public CustomerVO() {
     }
-
+    public CustomerVO(String name, String id, String password, String phone, String address){
+        this.name = name;
+        this.id = id;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+    }
     public CustomerVO(String id, String name, String password) {
         this.id = id;
         this.name = name;

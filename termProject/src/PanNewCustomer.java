@@ -114,7 +114,18 @@ public class PanNewCustomer extends JPanel implements ActionListener
         phone = Text_PhoneNum.getText();
         address = Text_Address.getText();
 
-
+        CustomerVO newcustomer = new CustomerVO(name, id, password, phone, address);
+        if(customerList == null) customerList = new ArrayList<>();
+        customerList.add(newcustomer);
+        SaveCustomerFile(customerList, "./Account.txt");
+        resetFields();
+    }
+    private void resetFields() {
+        Text_CustomerName.setText("");
+        Text_ID.setText("");
+        Text_PassWord.setText("");
+        Text_PhoneNum.setText("");
+        Text_Address.setText("");
     }
 
     public List<CustomerVO> ReadCustomerFile(String filePath)
