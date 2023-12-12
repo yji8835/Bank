@@ -102,6 +102,7 @@ public class PanDelAccount extends JPanel implements ActionListener {
                         if (accountno.equals(checkingAccount.getAccount().getAccountNo())) {
                             accountlist.remove(checkingAccount);
                             System.out.println(accountlist);
+                            SaveCustomerFile(customerList, "./Account.txt");
                             return;
                         }
                     }
@@ -110,6 +111,7 @@ public class PanDelAccount extends JPanel implements ActionListener {
                         if (accountno.equals(savingAccount.getAccount().getAccountNo())) {
                             accountlist.remove(savingAccount);
                             System.out.println(accountlist);
+                            SaveCustomerFile(customerList, "./Account.txt");
                             return;
                         }
                     }
@@ -118,7 +120,6 @@ public class PanDelAccount extends JPanel implements ActionListener {
             }
         }
 
-        SaveCustomerFile(customerList, "./Account.txt");
     }
 
     public List<CustomerVO> ReadCustomerFile(String filePath)
