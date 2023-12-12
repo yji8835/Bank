@@ -24,7 +24,7 @@ public class PanNewCustomer extends JPanel implements ActionListener
     private String phone;
     private String address;
     private AccountVO accountVO;
-    private List<CustomerVO> customerList;
+    private List<CustomerVO> customerList = new ArrayList<>();
     private ArrayList<AccountVO> accountlist = new ArrayList<>();
 
     ManagerMain MainFrame;

@@ -27,10 +27,10 @@ PanViewAccount extends JPanel implements ActionListener
     private JButton Btn_Close;
     private JButton Btn_Return;
 
-    private List<CustomerVO> customerList;
+    private List<CustomerVO> customerList = new ArrayList<>();
     private String name;
     private String accountno;
-    private ArrayList<AccountVO> accountlist;
+    private ArrayList<AccountVO> accountlist = new ArrayList<>();
 
     ManagerMain MainFrame;
     public PanViewAccount(ManagerMain parent)

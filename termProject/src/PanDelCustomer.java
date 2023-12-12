@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class PanDelCustomer  extends JPanel implements ActionListener
 
     private JButton Btn_Del;
     private JButton Btn_Close;
-    private List<CustomerVO> customerList;
+    private List<CustomerVO> customerList = new ArrayList<>();
     private String name;
     private String id;
     private String password;

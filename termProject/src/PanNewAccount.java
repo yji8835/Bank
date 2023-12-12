@@ -49,8 +49,8 @@ public class PanNewAccount extends JPanel implements ActionListener {
 
     private double interestRate;
     private long maxTransferAmountToChecking;
-    private List<CustomerVO> customerList;
-    private ArrayList<AccountVO> accountlist;
+    private List<CustomerVO> customerList = new ArrayList<>();
+    private ArrayList<AccountVO> accountlist = new ArrayList<>();
 
 
     public PanNewAccount(ManagerMain parent) {

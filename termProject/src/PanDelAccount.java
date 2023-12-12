@@ -19,7 +19,7 @@ public class PanDelAccount extends JPanel implements ActionListener {
 
     private String name, password, accountno;
 
-    private List<CustomerVO> customerList;
+    private List<CustomerVO> customerList = new ArrayList<>();
 
 
     ManagerMain MainFrame;

@@ -23,8 +23,8 @@ public class PanViewCustomer  extends JPanel implements ActionListener
     private JButton Btn_View;
     private JButton Btn_Close;
     private JButton Btn_Return;
-    private List<CustomerVO> customerList;
-    private ArrayList<AccountVO> Accountlist;
+    private List<CustomerVO> customerList = new ArrayList<>();
+    private ArrayList<AccountVO> Accountlist = new ArrayList<>();
     private String name;
     private String id;
     private String password;
@@ -147,7 +147,6 @@ public class PanViewCustomer  extends JPanel implements ActionListener
 
         } else if (e.getSource() == Btn_View) {
             customerList = ReadCustomerFile("./Account.txt");
-            System.out.println(customerList);
             name = Text_CustomerName.getText();
             id = Text_ID.getText();
             password = Text_PassWord.getText();
@@ -191,16 +190,21 @@ public class PanViewCustomer  extends JPanel implements ActionListener
         Label_Address.setVisible(false);
         Text_Address.setVisible(false);
         Text_Phone.setVisible(false);
+        Text_Address.setText("");
+        Text_Phone.setText("");
         Label_accountbox.setVisible(false);
         accountbox.setVisible(false);
         Btn_Return.setVisible(false);
+        accountbox.removeAllItems();
     }
     private void view_customer(){
         if(name == null || id == null || password == null) {
             return;
         }
         for(int i = 0; i < customerList.size(); i++){
-            if(customerList.get(i).getName().equals(name)){
+            if(customerList.get(i).getName().equals(name)
+                && customerList.get(i).getId().equals(id)
+                && customerList.get(i).getPassword().equals(password)){
                 Accountlist = customerList.get(i).getAccountlist();
                 if(customerList.get(i).getPhone() == null){
                     Text_Phone.setText("저장되지 않았습니다.");
@@ -214,7 +218,7 @@ public class PanViewCustomer  extends JPanel implements ActionListener
                 }
 
                 for (AccountVO account : Accountlist) {
-                    accountbox.addItem(account); // Assuming AccountVO has a meaningful toString method
+                    accountbox.addItem(account);// Assuming AccountVO has a meaningful toString method
                 }
             }
         }
