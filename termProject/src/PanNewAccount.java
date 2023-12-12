@@ -171,7 +171,7 @@ public class PanNewAccount extends JPanel implements ActionListener {
 
     private void add_account() {
 
-        customerList = ReadCustomerFile("/Users/jong-in/Bank/Account.txt");
+        customerList = ReadCustomerFile("./Account.txt");
         System.out.println(customerList);
         balance = 0;
 

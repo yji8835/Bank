@@ -25,7 +25,8 @@ public class PanNewCustomer extends JPanel implements ActionListener
     private String address;
     private AccountVO accountVO;
     private List<CustomerVO> customerList;
-    private ArrayList<AccountVO> accountlist;
+    private ArrayList<AccountVO> accountlist = new ArrayList<>();
+
     ManagerMain MainFrame;
     public PanNewCustomer(ManagerMain parent)
     {
@@ -113,6 +114,7 @@ public class PanNewCustomer extends JPanel implements ActionListener
         password = Text_PassWord.getText();
         phone = Text_PhoneNum.getText();
         address = Text_Address.getText();
+
 
 
         CustomerVO newcustomer = new CustomerVO(name, id, password, phone, address, accountlist);

@@ -3,6 +3,7 @@
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/Account.txt" charset="ISO-8859-1" />
     <file url="file://$PROJECT_DIR$/BankATM/src/atm/ATMMain.java" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/BankATM/src/atm/PanLogin.java" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/BankATM/src/common/CommandDTO.java" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/BankServer/src/bank/AccountVO.java" charset="x-windows-949" />
     <file url="file://$PROJECT_DIR$/BankServer/src/bank/CheckingAccount.java" charset="UTF-8" />
