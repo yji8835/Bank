@@ -114,7 +114,8 @@ public class PanNewCustomer extends JPanel implements ActionListener
         phone = Text_PhoneNum.getText();
         address = Text_Address.getText();
 
-        CustomerVO newcustomer = new CustomerVO(name, id, password, phone, address);
+
+        CustomerVO newcustomer = new CustomerVO(name, id, password, phone, address, accountlist);
         if(customerList == null) customerList = new ArrayList<>();
         customerList.add(newcustomer);
         SaveCustomerFile(customerList, "./Account.txt");

@@ -41,12 +41,21 @@ public class CustomerVO implements Serializable {
         this.password = password;
     }
 
-    public CustomerVO(String id, String name, String password, AccountVO account) {
+    public CustomerVO(String name, String id, String password, AccountVO account) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.account = account;
         this.accountlist = new ArrayList<>();
+    }
+    public CustomerVO(String name, String id, String password, String phone, String address, ArrayList accountlist) {
+        this.id = id;
+        this.name = name;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.account = account;
+        this.accountlist = accountlist;
     }
 
     public String getId() {
