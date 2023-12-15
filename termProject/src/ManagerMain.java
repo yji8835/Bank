@@ -1,9 +1,14 @@
+import common.CommandDTO;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetSocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
@@ -29,10 +34,11 @@ public class ManagerMain extends JFrame implements ActionListener {
     PanViewCustomer Pan_ViewCustomer;
     PanDelCustomer Pan_DelCustomer;
     PanOutputData Pan_OutputData;
-
+    private AsynchronousChannelGroup channelGroup;
+    private AsynchronousSocketChannel channel;
     
     public ManagerMain() {
-//        starClient();
+        starManager();
         InitGui();
         setVisible(true);
     }
@@ -125,10 +131,15 @@ public class ManagerMain extends JFrame implements ActionListener {
         add(Pan_DelCustomer);
         Pan_DelCustomer.setVisible(false);
 
+        ManagerLogin ManagerLogin = new ManagerLogin(this);
+        add(ManagerLogin);
+        ManagerLogin.setVisible(true);
+
         /*Pan_OutputData = new PanOutputData(this);
         add(Pan_OutputData);
         Pan_OutputData.setVisible(false);*/
     }
+
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == Btn_NewAccount)
@@ -230,11 +241,63 @@ public class ManagerMain extends JFrame implements ActionListener {
             Btn_Exit.setVisible(false);
         }
     }
-
-
+    private void starManager() {
+        try {
+            channelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors(), Executors.defaultThreadFactory());
+            channel = AsynchronousSocketChannel.open(channelGroup);
+            channel.connect(new InetSocketAddress("localhost", 5001), null, new CompletionHandler<Void, Void>() {
+                @Override
+                public void completed(Void result, Void attachment) {
+                    System.out.println("뱅크 서버 접속");
+                }
+                @Override
+                public void failed(Throwable exc, Void attachment) {
+                    disconnectServer();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void stopManager() {
+        try {
+            if (channelGroup != null && !channelGroup.isShutdown()) {
+                channelGroup.shutdownNow();
+                channelGroup.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS); // 기다리도록 추가
+            }
+            System.out.println("연결 종료");
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    private void disconnectServer() {
+        stopManager();
+    }
+    public synchronized void send(CommandDTO commandDTO, CompletionHandler<Integer, ByteBuffer> handlers) {
+        try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(commandDTO);
+            objectOutputStream.flush();
+             channel.write(ByteBuffer.wrap(byteArrayOutputStream.toByteArray()), null, new CompletionHandler<Integer, ByteBuffer>() {
+                @Override
+                public void completed(Integer result, ByteBuffer attachment) {
+                    ByteBuffer byteBuffer = ByteBuffer.allocate(512);
+                    channel.read(byteBuffer, byteBuffer, handlers);
+                }
+                @Override
+                public void failed(Throwable exc, ByteBuffer attachment) {
+                    disconnectServer();
+                }
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void main(String[] args) throws Exception
     {
         ManagerMain my = new ManagerMain();
+        my.SetFrameUI(false);
     }
 }
 

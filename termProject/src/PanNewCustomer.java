@@ -103,6 +103,11 @@ public class PanNewCustomer extends JPanel implements ActionListener
         if (e.getSource() == Btn_Close) {
             this.setVisible(false);
             MainFrame.display("Main");
+            Text_ID.setText("");
+            Text_CustomerName.setText("");
+            Text_PassWord.setText("");
+            Text_PhoneNum.setText("");
+            Text_Address.setText("");
         } else if (e.getSource() == Btn_Regi) {
             add_customer();
         }

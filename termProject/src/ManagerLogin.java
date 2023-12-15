@@ -1,13 +1,35 @@
+
+import common.*;
+
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.CompletionHandler;
+import java.util.HashMap;
+import java.util.Map;
+
+
+import common.*;
+
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.CompletionHandler;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ManagerLogin   extends JPanel implements ActionListener
 {
     private JLabel Label_ID, Label_PassWord;
     private  JTextField Text_ID, Text_PassWord;
 
-    private JButton Btn_View;
+    private JButton Btn_Transfer;
     private JButton Btn_Close;
 
     ManagerMain MainFrame;
@@ -42,10 +64,10 @@ public class ManagerLogin   extends JPanel implements ActionListener
         Text_PassWord.setEditable(true);
         add(Text_PassWord);
 
-        Btn_View = new JButton("로그인");
-        Btn_View.setBounds(140,250,70,20);
-        Btn_View.addActionListener(this);
-        add(Btn_View);
+        Btn_Transfer = new JButton("로그인");
+        Btn_Transfer.setBounds(140,250,70,20);
+        Btn_Transfer.addActionListener(this);
+        add(Btn_Transfer);
 
         Btn_Close = new JButton("취소");
         Btn_Close.setBounds(250,250,70,20);
@@ -57,5 +79,48 @@ public class ManagerLogin   extends JPanel implements ActionListener
             this.setVisible(false);
             MainFrame.display("Main");
         }
+        if(e.getSource() == Btn_Transfer)
+        {
+            Login();
+        }
     }
+    public void Login() {
+        String enteredManagername = Text_ID.getText();
+        String enteredPassword = Text_PassWord.getText();
+
+        Map<String, String> ManagerCredentials = readManagerCredentials("./ManagerID.txt");
+
+        if (validateCredentials(ManagerCredentials, enteredManagername, enteredPassword)) {
+            JOptionPane.showMessageDialog(this, "로그인 성공!");
+            this.setVisible(false);
+            MainFrame.display("Main");
+        } else {
+            JOptionPane.showMessageDialog(this, "로그인 실패. 아이디 또는 비밀번호를 확인하세요.");
+        }
+    }
+
+    private Map<String, String> readManagerCredentials(String filePath) {
+        Map<String, String> userCredentials = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length == 2) {
+                    String username = parts[0].trim();
+                    String password = parts[1].trim();
+                    userCredentials.put(username, password);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return userCredentials;
+    }
+
+    private boolean validateCredentials(Map<String, String> userCredentials, String username, String password) {
+        return userCredentials.containsKey(username) && userCredentials.get(username).equals(password);
+    }
+
 }

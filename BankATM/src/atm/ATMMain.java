@@ -344,7 +344,7 @@ public class ATMMain
     //                ATMMain Class는 BankServiceHandler 인터페이스를 상속하였다.
     //*******************************************************************
     @Override
-    public void send(CommandDTO commandDTO, CompletionHandler<Integer, ByteBuffer> handlers) {
+    public synchronized void send(CommandDTO commandDTO, CompletionHandler<Integer, ByteBuffer> handlers) {
         commandDTO.setId(userId);
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

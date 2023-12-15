@@ -172,11 +172,11 @@ class ServerMain
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        Btn_StartStop = new JToggleButton("시작");
+        Btn_StartStop = new JToggleButton("start");
         Btn_StartStop.addActionListener(this);
         bottomPanel.add(Btn_StartStop);
 
-        Btn_Reset = new JButton("텍스트 창 초기화");
+        Btn_Reset = new JButton("text reset");
         Btn_Reset.addActionListener(this);
         bottomPanel.add(Btn_Reset);
 
@@ -237,8 +237,8 @@ class ServerMain
             serverSocketChannel.bind(new InetSocketAddress(5001));
             SwingUtilities.invokeLater(() ->
             {
-                addMsg("서버 시작");
-                Btn_StartStop.setText("정지");
+                addMsg("server start");
+                Btn_StartStop.setText("server stop");
             });
             serverSocketChannel.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>()
             {
@@ -247,7 +247,7 @@ class ServerMain
                 {
                     try
                     {
-                        addMsg(socketChannel.getRemoteAddress() + " 접속");
+                        addMsg(socketChannel.getRemoteAddress() + " connect");
                     }
                     catch (IOException e)
                     {
@@ -304,8 +304,8 @@ class ServerMain
             {
                 SwingUtilities.invokeLater(() ->
                 {
-                    addMsg("서버 정지");
-                    Btn_StartStop.setText("시작");
+                    addMsg("server stop");
+                    Btn_StartStop.setText("server start");
                 });
             }
         }

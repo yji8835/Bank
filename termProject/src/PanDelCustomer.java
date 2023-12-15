@@ -88,6 +88,10 @@ public class PanDelCustomer  extends JPanel implements ActionListener
         if (e.getSource() == Btn_Close) {
             this.setVisible(false);
             MainFrame.display("Main");
+            Text_ID.setText("");
+            Text_CustomerName.setText("");
+            Text_PassWord.setText("");
+            Text_PhoneNum.setText("");
         } else if (e.getSource() == Btn_Del) {
             delecustomer();
         }

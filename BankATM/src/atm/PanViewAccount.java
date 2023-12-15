@@ -17,7 +17,7 @@ import java.nio.channels.CompletionHandler;
 //*******************************************************************
 // Name : PanViewAccount
 // Type : Class
-// Description :  °èÁÂÁ¶È¸ È­¸é ÆÐ³ÎÀ» ±¸ÇöÇÑ Class ÀÌ´Ù.
+// Description :  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ È­ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Class ï¿½Ì´ï¿½.
 //*******************************************************************
 public class PanViewAccount extends JPanel implements ActionListener
 {
@@ -34,8 +34,8 @@ public class PanViewAccount extends JPanel implements ActionListener
     // # 03-01
     //*******************************************************************
     // Name : PanViewAccount()
-    // Type : »ý¼ºÀÚ
-    // Description :  PanViewAccount ClassÀÇ »ý¼ºÀÚ ±¸Çö
+    // Type : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    // Description :  PanViewAccount Classï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //*******************************************************************
     public PanViewAccount(ATMMain parent)
     {
@@ -48,14 +48,14 @@ public class PanViewAccount extends JPanel implements ActionListener
     //*******************************************************************
     // Name : InitGUI
     // Type : Method
-    // Description :  °èÁÂÁ¶È¸ È­¸é ÆÐ³ÎÀÇ GUI¸¦ ÃÊ±âÈ­ ÇÏ´Â ¸Þ¼Òµå ±¸Çö
+    // Description :  ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ È­ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ GUIï¿½ï¿½ ï¿½Ê±ï¿½È­ ï¿½Ï´ï¿½ ï¿½Þ¼Òµï¿½ ï¿½ï¿½ï¿½ï¿½
     //*******************************************************************
     private void InitGUI()
     {
         setLayout(null);
         setBounds(0,0,480,320);
 
-        Label_Account = new JLabel("°èÁÂ ¹øÈ£");
+        Label_Account = new JLabel("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È£");
         Label_Account.setBounds(0,70,100,20);
         Label_Account.setHorizontalAlignment(JLabel.LEFT);
         add(Label_Account);
@@ -65,7 +65,7 @@ public class PanViewAccount extends JPanel implements ActionListener
         Text_Account.setEditable(false);
         add(Text_Account);
 
-        Label_balance = new JLabel("ÀÜ¾×");
+        Label_balance = new JLabel("ï¿½Ü¾ï¿½");
         Label_balance.setBounds(0,120,100,20);
         Label_balance.setHorizontalAlignment(JLabel.LEFT);
         add(Label_balance);
@@ -75,7 +75,7 @@ public class PanViewAccount extends JPanel implements ActionListener
         Text_balance.setEditable(false);
         add(Text_balance);
 
-        Btn_Close = new JButton("´Ý±â");
+        Btn_Close = new JButton("ï¿½Ý±ï¿½");
         Btn_Close.setBounds(250,250,70,20);
         Btn_Close.addActionListener(this);
         add(Btn_Close);
@@ -86,8 +86,8 @@ public class PanViewAccount extends JPanel implements ActionListener
     //*******************************************************************
     // Name : actionPerformed
     // Type : Listner
-    // Description :  Ãë¼Ò ¹öÆ°ÀÇ µ¿ÀÛÀ» ±¸Çö
-    //                Ãë¼Ò µ¿ÀÛ ÈÄ ¸ÞÀÎ È­¸éÀ¸·Î º¯°æµÇµµ·Ï ±¸Çö
+    // Description :  ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    //                ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Çµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //*******************************************************************
     public void actionPerformed(ActionEvent e)
     {
@@ -103,7 +103,7 @@ public class PanViewAccount extends JPanel implements ActionListener
     //*******************************************************************
     // Name : GetBalance()
     // Type : Method
-    // Description :  ATMMainÀÇ Send ±â´ÉÀ» È£ÃâÇÏ¿© ¼­¹ö¿¡ °èÁÂÁ¶È¸ ¿äÃ» ¸Þ½ÃÁö¸¦ Àü´Þ ÇÏ´Â ±â´É.
+    // Description :  ATMMainï¿½ï¿½ Send ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¸ ï¿½ï¿½Ã» ï¿½Þ½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½.
     //*******************************************************************
     public void GetBalance()
     {
@@ -122,7 +122,7 @@ public class PanViewAccount extends JPanel implements ActionListener
                         String accountNumber = BankUtils.displayAccountNo(command.getUserAccountNo());
                         Text_Account.setText(accountNumber);
                         String balance = BankUtils.displayBalance(command.getBalance());
-                        Text_balance.setText(balance + "¿ø");
+                        Text_balance.setText(balance + "ï¿½ï¿½");
                     });
                 } catch (IOException e) {
                     e.printStackTrace();

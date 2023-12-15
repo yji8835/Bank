@@ -15,7 +15,17 @@ public enum RequestType {
     DEPOSIT("입금", 30),
     WITHDRAW("출금", 40),
     LOGIN("로그인", 50),
+    NEWACCOUNT("계좌추가", 110),
+    VIEWACCOUNT("계좌조회", 120),
+    DELETEACCOUNT("계좌삭제", 130),
+    NEWCUSTOMER("고객추가", 140),
+    VIEWCUSTOMER("고객조회", 150),
+    DELETECUSTOMER("고객삭제", 160),
+    MANAGERLOGIN("매니저 로그인", 170),
+    VIEWALL("전체조회", 180),
     BANK_INFO("은행 정보", 99);
+
+
 
     private String name;
     private int number;

@@ -144,6 +144,10 @@ public class PanViewCustomer  extends JPanel implements ActionListener
         if (e.getSource() == Btn_Close) {
             this.setVisible(false);
             MainFrame.display("Main");
+            Text_ID.setText("");
+            Text_CustomerName.setText("");
+            Text_PassWord.setText("");
+            block_result();
 
         } else if (e.getSource() == Btn_View) {
             customerList = ReadCustomerFile("./Account.txt");
@@ -206,6 +210,7 @@ public class PanViewCustomer  extends JPanel implements ActionListener
                 && customerList.get(i).getId().equals(id)
                 && customerList.get(i).getPassword().equals(password)){
                 Accountlist = customerList.get(i).getAccountlist();
+                System.out.println(customerList.get(i));
                 if(customerList.get(i).getPhone() == null){
                     Text_Phone.setText("저장되지 않았습니다.");
                 } else{

@@ -18,7 +18,7 @@ import java.nio.channels.CompletionHandler;
 //*******************************************************************
 // Name : PanWithdrawal
 // Type : Class
-// Description :  출금 화면 패널을 구현한 Class 이다.
+// Description :  ??? ??? ?均??? ?????? Class ???.
 //*******************************************************************
 public class PanWithdrawal extends JPanel implements ActionListener
 {
@@ -38,8 +38,8 @@ public class PanWithdrawal extends JPanel implements ActionListener
     // # 06-01
     //*******************************************************************
     // Name : PanWithdrawal()
-    // Type : 생성자
-    // Description :  PanDeposite Class의 생성자 구현
+    // Type : ??????
+    // Description :  PanDeposite Class?? ?????? ????
     //*******************************************************************
     public PanWithdrawal(ATMMain parent)
     {
@@ -52,7 +52,7 @@ public class PanWithdrawal extends JPanel implements ActionListener
     //*******************************************************************
     // Name : InitGUI
     // Type : Method
-    // Description :  출금 화면 패널의 GUI를 초기화 하는 메소드 구현
+    // Description :  ??? ??? ?均??? GUI?? ???? ??? ???? ????
     //*******************************************************************
     private void InitGUI()
     {
@@ -60,13 +60,13 @@ public class PanWithdrawal extends JPanel implements ActionListener
         setBounds(0,0,480,320);
 
 
-        Label_Title = new JLabel("출금");
+        Label_Title = new JLabel("???");
         Label_Title.setBounds(0,0,480,40);
         Label_Title.setHorizontalAlignment(JLabel.CENTER);
         add(Label_Title);
 
 
-        Label_Amount = new JLabel("금액");
+        Label_Amount = new JLabel("???");
         Label_Amount.setBounds(0,120,100,20);
         Label_Amount.setHorizontalAlignment(JLabel.CENTER);
         add(Label_Amount);
@@ -74,15 +74,15 @@ public class PanWithdrawal extends JPanel implements ActionListener
         Text_Amount = new JTextField();
         Text_Amount.setBounds(100,120,350,20);
         Text_Amount.setEditable(true);
-        Text_Amount.setToolTipText("숫자만 입력");
+        Text_Amount.setToolTipText("????? ???");
         add(Text_Amount);
 
-        Btn_Transfer = new JButton("출금");
+        Btn_Transfer = new JButton("???");
         Btn_Transfer.setBounds(100,250,70,20);
         Btn_Transfer.addActionListener(this);
         add(Btn_Transfer);
 
-        Btn_Close = new JButton("취소");
+        Btn_Close = new JButton("???");
         Btn_Close.setBounds(250,250,70,20);
         Btn_Close.addActionListener(this);
         add(Btn_Close);
@@ -93,8 +93,8 @@ public class PanWithdrawal extends JPanel implements ActionListener
     //*******************************************************************
     // Name : actionPerformed
     // Type : Listner
-    // Description :  입금 버튼, 취소 버튼의 동작을 구현
-    //                입금, 취소 동작 후 메인 화면으로 변경되도록 구현
+    // Description :  ??? ???, ??? ????? ?????? ????
+    //                ???, ??? ???? ?? ???? ??????? ???????? ????
     //*******************************************************************
     public void actionPerformed(ActionEvent e)
     {
@@ -116,8 +116,8 @@ public class PanWithdrawal extends JPanel implements ActionListener
     //*******************************************************************
     // Name : Withdrawal()
     // Type : Method
-    // Description :  출금 화면의 데이터를 가지고 있는 CommandDTO를 생성하고,
-    //                ATMMain의 Send 기능을 호출하여 서버에 출금 요청 메시지를 전달 하는 기능.
+    // Description :  ??? ????? ??????? ?????? ??? CommandDTO?? ???????,
+    //                ATMMain?? Send ????? ?????? ?????? ??? ??? ??????? ???? ??? ???.
     //*******************************************************************
     public void Withdrawal() {
         long amount = Long.parseLong(Text_Amount.getText());
@@ -142,13 +142,13 @@ public class PanWithdrawal extends JPanel implements ActionListener
                         String contentText = null;
                         if (command.getResponseType() == ResponseType.SUCCESS)
                         {
-                            contentText = "출금 되었습니다.";
+                            contentText = "??? ????????.";
                             JOptionPane.showMessageDialog(null, contentText, "SUCCESS_MESSAGE", JOptionPane.PLAIN_MESSAGE);
                         }
                         else if (command.getResponseType() == ResponseType.INSUFFICIENT)
                         {
 
-                            contentText = "잔액이 부족합니다";
+                            contentText = "????? ????????";
                             JOptionPane.showMessageDialog(null, contentText, "ERROR_MESSAGE", JOptionPane.ERROR_MESSAGE);
                         }
                         else
