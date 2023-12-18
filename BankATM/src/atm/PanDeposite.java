@@ -25,8 +25,8 @@ public class PanDeposite extends JPanel implements ActionListener
 {
     private JLabel Label_Title;
 
-    private JLabel Label_Amount;
-    private JTextField Text_Amount;
+    private JLabel Label_Amount, Label_Account;
+    private JTextField Text_Amount, Text_Account;
 
 
     private JButton Btn_Deposite;
@@ -66,13 +66,23 @@ public class PanDeposite extends JPanel implements ActionListener
         Label_Title.setHorizontalAlignment(JLabel.CENTER);
         add(Label_Title);
 
+        Label_Account = new JLabel("계좌");
+        Label_Account.setBounds(0,100,100,20);
+        Label_Account.setHorizontalAlignment(JLabel.CENTER);
+        add(Label_Account);
+
+        Text_Account = new JTextField();
+        Text_Account.setBounds(100,100,350,20);
+        Text_Account.setEditable(true);
+        add(Text_Account);
+
         Label_Amount = new JLabel("금액");
-        Label_Amount.setBounds(0,120,100,20);
+        Label_Amount.setBounds(0,150,100,20);
         Label_Amount.setHorizontalAlignment(JLabel.CENTER);
         add(Label_Amount);
 
         Text_Amount = new JTextField();
-        Text_Amount.setBounds(100,120,350,20);
+        Text_Amount.setBounds(100,150,350,20);
         Text_Amount.setEditable(true);
         add(Text_Amount);
 
@@ -122,8 +132,9 @@ public class PanDeposite extends JPanel implements ActionListener
     //                ATMMain의 Send 기능을 호출하여 서버에 입금 요청 메시지를 전달 하는 기능.
     //*******************************************************************
     public void deposit() {
+        String account = Text_Account.getText();
         long amount = Long.parseLong(Text_Amount.getText());
-        CommandDTO commandDTO = new CommandDTO(RequestType.DEPOSIT, ATMMain.userId, amount);
+        CommandDTO commandDTO = new CommandDTO(RequestType.DEPOSIT, ATMMain.userId, account, amount);
         MainFrame.send(commandDTO, new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
@@ -137,7 +148,6 @@ public class PanDeposite extends JPanel implements ActionListener
                     CommandDTO command = (CommandDTO) objectInputStream.readObject();
                     SwingUtilities.invokeLater(() ->
                     {
-
                         String contentText = null;
                         if (command.getResponseType() == ResponseType.SUCCESS)
                         {
@@ -146,7 +156,6 @@ public class PanDeposite extends JPanel implements ActionListener
                         }
                         else
                         {
-
                             contentText = "입금 오류! 관리자에게 문의하세요.";
                             JOptionPane.showMessageDialog(null, contentText, "ERROR_MESSAGE", JOptionPane.ERROR_MESSAGE);
                         }

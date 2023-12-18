@@ -26,7 +26,7 @@ public class PanViewAccount extends JPanel implements ActionListener
     private JLabel Label_balance;
     private  JTextArea Text_balance;
 
-    private JButton Btn_Close;
+    private JButton Btn_Close, Btn_View;
 
     ATMMain MainFrame;
     
@@ -55,17 +55,17 @@ public class PanViewAccount extends JPanel implements ActionListener
         setLayout(null);
         setBounds(0,0,480,320);
 
-        Label_Account = new JLabel("���� ��ȣ");
+        Label_Account = new JLabel("account");
         Label_Account.setBounds(0,70,100,20);
         Label_Account.setHorizontalAlignment(JLabel.LEFT);
         add(Label_Account);
 
         Text_Account = new JTextArea();
         Text_Account.setBounds(100,70,350,20);
-        Text_Account.setEditable(false);
+        Text_Account.setEditable(true);
         add(Text_Account);
 
-        Label_balance = new JLabel("�ܾ�");
+        Label_balance = new JLabel("balance");
         Label_balance.setBounds(0,120,100,20);
         Label_balance.setHorizontalAlignment(JLabel.LEFT);
         add(Label_balance);
@@ -75,7 +75,12 @@ public class PanViewAccount extends JPanel implements ActionListener
         Text_balance.setEditable(false);
         add(Text_balance);
 
-        Btn_Close = new JButton("�ݱ�");
+        Btn_View = new JButton("view");
+        Btn_View.setBounds(150,250,70,20);
+        Btn_View.addActionListener(this);
+        add(Btn_View);
+
+        Btn_Close = new JButton("close");
         Btn_Close.setBounds(250,250,70,20);
         Btn_Close.addActionListener(this);
         add(Btn_Close);
@@ -96,6 +101,10 @@ public class PanViewAccount extends JPanel implements ActionListener
             this.setVisible(false);
             MainFrame.display("Main");
         }
+        if (e.getSource() == Btn_View)
+        {
+            GetBalance();
+        }
     } 
     
     //*******************************************************************
@@ -107,7 +116,7 @@ public class PanViewAccount extends JPanel implements ActionListener
     //*******************************************************************
     public void GetBalance()
     {
-        MainFrame.send(new CommandDTO(RequestType.VIEW), new CompletionHandler<Integer, ByteBuffer>() {
+        MainFrame.send(new CommandDTO(RequestType.VIEW, Text_Account.getText()), new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer attachment) {
                 if (result == -1) {
@@ -119,10 +128,10 @@ public class PanViewAccount extends JPanel implements ActionListener
                     ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
                     CommandDTO command = (CommandDTO) objectInputStream.readObject();
                     SwingUtilities.invokeLater(() -> {
-                        String accountNumber = BankUtils.displayAccountNo(command.getUserAccountNo());
-                        Text_Account.setText(accountNumber);
+                        //String accountNumber = BankUtils.displayAccountNo(command.getUserAccountNo());
+                        //Text_Account.setText(accountNumber);
                         String balance = BankUtils.displayBalance(command.getBalance());
-                        Text_balance.setText(balance + "��");
+                        Text_balance.setText(balance + "원");
                     });
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -134,6 +143,7 @@ public class PanViewAccount extends JPanel implements ActionListener
             public void failed(Throwable exc, ByteBuffer attachment) {
             }
         });
+
     }
 
 }

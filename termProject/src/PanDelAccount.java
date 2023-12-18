@@ -2,11 +2,16 @@ import bank.AccountVO;
 import bank.CheckingAccount;
 import bank.CustomerVO;
 import bank.SavingsAccount;
+import common.CommandDTO;
+import common.RequestType;
+import common.ResponseType;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +22,7 @@ public class PanDelAccount extends JPanel implements ActionListener {
     private JButton Btn_Del;
     private JButton Btn_Close;
 
-    private String name, password, accountno;
+    private String id, password, accountno;
 
     private List<CustomerVO> customerList = new ArrayList<>();
 
@@ -80,72 +85,55 @@ public class PanDelAccount extends JPanel implements ActionListener {
             MainFrame.display("Main");
         }
         if (e.getSource() == Btn_Del) {
-            deleteaccount();
-        }
-    }
-
-    public void deleteaccount() {
-        customerList = ReadCustomerFile("./Account.txt");
-
-        for (int i = 0; i < customerList.size(); i++) {
-            name = Text_CustomerName.getText();
-            password = Text_PassWord.getText();
-            accountno = Text_Account.getText();
-
-            if(customerList.get(i).getId().equals(name) && customerList.get(i).getPassword().equals(password)) {
-                ArrayList<AccountVO> accountlist = customerList.get(i).getAccountlist();
-
-                for (AccountVO account : accountlist) {
-
-                    if (account instanceof CheckingAccount) {
-                        CheckingAccount checkingAccount = (CheckingAccount)account;
-                        if (accountno.equals(checkingAccount.getAccount().getAccountNo())) {
-                            accountlist.remove(checkingAccount);
-                            System.out.println(accountlist);
-                            SaveCustomerFile(customerList, "./Account.txt");
-                            return;
-                        }
-                    }
-                    if (account instanceof SavingsAccount) {
-                        SavingsAccount savingAccount = (SavingsAccount) account;
-                        if (accountno.equals(savingAccount.getAccount().getAccountNo())) {
-                            accountlist.remove(savingAccount);
-                            System.out.println(accountlist);
-                            SaveCustomerFile(customerList, "./Account.txt");
-                            return;
-                        }
-                    }
-
-                }
+            if (Text_CustomerName.getText() != null && Text_Account.getText() != null && Text_PassWord.getText() != null) {
+                id = Text_CustomerName.getText();
+                accountno = Text_Account.getText();
+                password = Text_PassWord.getText();
+                delaccount();
             }
         }
-
     }
 
-    public List<CustomerVO> ReadCustomerFile(String filePath)
-    {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./Account.txt")))
-        {
-            List<CustomerVO> customers = (List<CustomerVO>) ois.readObject();
-            System.out.println("Objects read from " + filePath);
-            return customers;
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            System.out.println("File not found.");
-            return null;
-        }
-    }
+    public void delaccount() {
+        CommandDTO commandDTO = new CommandDTO(RequestType.DELETEACCOUNT, id, accountno, password);
+        System.out.println(commandDTO);
+        MainFrame.send(commandDTO, new CompletionHandler<Integer, ByteBuffer>() {
+            @Override
+            public void completed(Integer result, ByteBuffer attachment) {
+                if (result == -1) {
+                    return;
+                }
+                attachment.flip();
+                try {
+                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(attachment.array());
+                    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                    CommandDTO command = (CommandDTO) objectInputStream.readObject();
+                    SwingUtilities.invokeLater(() ->
+                    {
+                        String contentText = "";
+                        if (command.getResponseType() == ResponseType.SUCCESS) {
+                            contentText = "계좌가 삭제되었습니다.";
+                            JOptionPane.showMessageDialog(null, contentText, "SUCCESS_MESSAGE", JOptionPane.PLAIN_MESSAGE);
+                        }else if (command.getResponseType() == ResponseType.WRONG_PASSWORD){
+                            contentText = "비밀번호가 틀렸습니다.";
+                            JOptionPane.showMessageDialog(null, contentText, "ERROR_MESSAGE", JOptionPane.ERROR_MESSAGE);
+                        }else if (command.getResponseType() == ResponseType.FAILURE){
+                            contentText = "error";
+                            JOptionPane.showMessageDialog(null, contentText, "ERROR_MESSAGE", JOptionPane.ERROR_MESSAGE);
+                        }
 
-    public void SaveCustomerFile(List<CustomerVO> customers, String filePath)
-    {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath)))
-        {
-            oos.writeObject(customers);
-            System.out.println("Objects saved to " + filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void failed(Throwable exc, ByteBuffer attachment) {
+            }
+        });
     }
 
 }

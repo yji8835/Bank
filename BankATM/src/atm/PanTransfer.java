@@ -23,8 +23,8 @@ import java.nio.channels.CompletionHandler;
 
 public class PanTransfer extends JPanel implements ActionListener
 {
-    private JLabel Label_RecvAccount;
-    private  JTextField Text_RecvAccount;
+    private JLabel Label_RecvAccount, Label_Account;
+    private  JTextField Text_RecvAccount, Text_Account;
 
 
     private JLabel Label_Amount;
@@ -65,35 +65,47 @@ public class PanTransfer extends JPanel implements ActionListener
         setLayout(null);
         setBounds(0,0,480,320);
 
+
+        Label_Account = new JLabel("보내는 계좌번호");
+        Label_Account.setBounds(0,20,100,20);
+        Label_Account.setHorizontalAlignment(JLabel.LEFT);
+        add(Label_Account);
+
+        Text_Account = new JTextField();
+        Text_Account.setBounds(100,20,350,20);
+        Text_Account.setEditable(true);
+        Text_Account.setToolTipText("숫자만 입력");
+        add(Text_Account);
+
         Label_RecvAccount = new JLabel("받는 분 계좌번호");
-        Label_RecvAccount.setBounds(0,20,100,20);
+        Label_RecvAccount.setBounds(0,70,100,20);
         Label_RecvAccount.setHorizontalAlignment(JLabel.LEFT);
         add(Label_RecvAccount);
 
         Text_RecvAccount = new JTextField();
-        Text_RecvAccount.setBounds(100,20,350,20);
+        Text_RecvAccount.setBounds(100,70,350,20);
         Text_RecvAccount.setEditable(true);
         Text_RecvAccount.setToolTipText("숫자만 입력");
         add(Text_RecvAccount);
 
         Label_Amount = new JLabel("이체금액");
-        Label_Amount.setBounds(0,70,100,20);
+        Label_Amount.setBounds(0,120,100,20);
         Label_Amount.setHorizontalAlignment(JLabel.LEFT);
         add(Label_Amount);
 
         Text_Amount = new JTextField();
-        Text_Amount.setBounds(100,70,350,20);
+        Text_Amount.setBounds(100,120,350,20);
         Text_Amount.setEditable(true);
         Text_Amount.setToolTipText("숫자만 입력");
         add(Text_Amount);
 
         Label_Password = new JLabel("비밀번호");
-        Label_Password.setBounds(0,120,100,20);
+        Label_Password.setBounds(0,170,100,20);
         Label_Password.setHorizontalAlignment(JLabel.LEFT);
         add(Label_Password);
 
         Text_Password = new JTextField();
-        Text_Password.setBounds(100,120,350,20);
+        Text_Password.setBounds(100,170,350,20);
         Text_Password.setEditable(true);
         add(Text_Password);
 
@@ -142,11 +154,12 @@ public class PanTransfer extends JPanel implements ActionListener
     //*******************************************************************
     public void Transfer()
     {
+        String accountNo = Text_Account.getText();
         String receiveAccountNo = Text_RecvAccount.getText();
         long amount = Long.parseLong(Text_Amount.getText());
         String password = Text_Password.getText();
 
-        CommandDTO commandDTO = new CommandDTO(RequestType.TRANSFER, password, MainFrame.userId, receiveAccountNo, amount);
+        CommandDTO commandDTO = new CommandDTO(RequestType.TRANSFER, password, MainFrame.userId, accountNo, receiveAccountNo, amount);
         MainFrame.send(commandDTO, new CompletionHandler<Integer, ByteBuffer>() {
             @Override
             public void completed(Integer result, ByteBuffer attachment) {

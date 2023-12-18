@@ -177,7 +177,7 @@ public class ATMMain
         {
             // °èÁÂ Á¶È¸
             display("ViewAccount");
-            Pan_ViewAccount.GetBalance();
+            //Pan_ViewAccount.GetBalance();
         }
         else if (e.getSource() == Btn_Transfer)
         {

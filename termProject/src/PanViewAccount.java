@@ -2,20 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.*;
-import java.sql.Date;
-import java.time.LocalDate;
+import java.nio.ByteBuffer;
+import java.nio.channels.CompletionHandler;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import bank.AccountVO;
-import bank.CheckingAccount;
 import bank.CustomerVO;
-import bank.SavingsAccount;
-import common.AccountType;
+import common.CommandDTO;
+import common.RequestType;
 
 public class
 PanViewAccount extends JPanel implements ActionListener
@@ -39,23 +35,6 @@ PanViewAccount extends JPanel implements ActionListener
         InitGUI();
 
     }
-
-    public List<CustomerVO> ReadCustomerFile(String filePath)
-    {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./Account.txt")))
-        {
-            List<CustomerVO> customers = (List<CustomerVO>) ois.readObject();
-            System.out.println("Objects read from " + filePath);
-            return customers;
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            // 파일이 존재하지 않을 때 초기 데이터로 리스트를 초기화
-            System.out.println("File not found. Initializing with default data.");
-            return null;
-        }
-    }
-
 
     private void InitGUI()
     {
@@ -191,15 +170,20 @@ PanViewAccount extends JPanel implements ActionListener
         }
         if (e.getSource() == Btn_View)
         {
-            customerList = ReadCustomerFile("./Account.txt");
             name = Text_CustomerName.getText();
             accountno = Text_Account.getText();
 
             Text_CustomerName.setText("");
             Text_Account.setText("");
+
+            if (name.equals("") || accountno.equals("")) {
+                return;
+            }
+
+            view();
+
             block_searchbox();
 
-            view_account();
 
             display_result();
 
@@ -251,44 +235,41 @@ PanViewAccount extends JPanel implements ActionListener
         Btn_Return.setVisible(true);
     }
 
-    private void view_account() {
+    public void view()
+    {
 
-        if (name==null || accountno==null) {
-            return;
-        }
-
-        for(int i=0; i< customerList.size(); i++) {
-
-            if(customerList.get(i).getId().equals(name)) {
-                System.out.println("1");
-                accountlist = customerList.get(i).getAccountlist();
-                System.out.println(customerList.get(i).getAccountlist());
-            }
-        }
-        for (AccountVO account : accountlist) {
-
-            if (account instanceof CheckingAccount) {
-                CheckingAccount checkingAccount = (CheckingAccount)account;
-                if (accountno.equals(checkingAccount.getAccount().getAccountNo())) {
-                    Text_type.setText(checkingAccount.getAccount().getType()+"");
-                    Text_balance.setText(checkingAccount.getAccount().getBalance()+"");
-                    Text_InterestRate.setText(0+"");
-                    Text_linkedSavings.setText(checkingAccount.getLinkedSavings().getAccount().getAccountNo()+"");
+        CommandDTO commandDTO = new CommandDTO(RequestType.VIEWACCOUNT, name, accountno);
+        System.out.println(commandDTO);
+        MainFrame.send(commandDTO, new CompletionHandler<Integer, ByteBuffer>() {
+            @Override
+            public void completed(Integer result, ByteBuffer attachment) {
+                if (result == -1) {
+                    return;
+                }
+                attachment.flip();
+                try {
+                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(attachment.array());
+                    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                    CommandDTO command = (CommandDTO) objectInputStream.readObject();
+                    SwingUtilities.invokeLater(() -> {
+                        Text_type.setText(command.getType()+"");
+                        Text_balance.setText(command.getBalance()+"");
+                        Text_InterestRate.setText(command.getInterestrate()+"");
+                        Text_linkedSavings.setText(command.getLinkedsaving()+"");
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
-            if (account instanceof SavingsAccount) {
-                SavingsAccount savingAccount = (SavingsAccount) account;
-                if (accountno.equals(savingAccount.getAccount().getAccountNo())) {
-                    Text_type.setText(savingAccount.getAccount().getType()+"");
-                    Text_balance.setText(savingAccount.getAccount().getBalance()+"");
-                    Text_InterestRate.setText(savingAccount.getInterestRater()+"");
-                    Text_linkedSavings.setText("none");
-                }
+            @Override
+            public void failed(Throwable exc, ByteBuffer attachment) {
             }
-
-        }
+        });
 
     }
+
 
 
 

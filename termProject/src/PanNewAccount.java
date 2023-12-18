@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.CompletionHandler;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +17,9 @@ import bank.CheckingAccount;
 import bank.CustomerVO;
 import bank.SavingsAccount;
 import common.AccountType;
+import common.CommandDTO;
+import common.RequestType;
+import common.ResponseType;
 
 public class PanNewAccount extends JPanel implements ActionListener {
     private JPanel AccountType;
@@ -42,13 +47,12 @@ public class PanNewAccount extends JPanel implements ActionListener {
     private String name;
     private String accountno;
     private AccountType type;
-    private long balance;
+    private long balance = 0;
     private Date openDate;
 
-    private String linkedSavings;
-
-    private double interestRate;
-    private long maxTransferAmountToChecking;
+    private String linkedSavings = "";
+    private double interestRate = 0;
+    private long maxTransferAmountToChecking = 0;
     private List<CustomerVO> customerList = new ArrayList<>();
     private ArrayList<AccountVO> accountlist = new ArrayList<>();
 
@@ -148,124 +152,71 @@ public class PanNewAccount extends JPanel implements ActionListener {
             this.setVisible(false);
             MainFrame.display("Main");
         }
-        if (e.getSource() == Btn_View) {
-
+        if ((e.getSource() == Btn_View) && Checking.isSelected()) {
             id = Text_CustomerName.getText();
             accountno = Text_Account.getText();
-            linkedSavings = Text_Linkedaccount.getText();
-            System.out.println(id);
-            System.out.println(accountno);
-
-            add_account();
-
-            //savedefaultlist();
-
-        }
-        if (Checking.isSelected()) {
             type = common.AccountType.CHECKING;
+            if (Text_Linkedaccount.getText() != null) {
+                linkedSavings = Text_Linkedaccount.getText();
+                interestRate = 0;
+                maxTransferAmountToChecking = 0;
+                newaccount();
+            }
         }
-        if (Saving.isSelected()) {
+
+        if ((e.getSource() == Btn_View) && Saving.isSelected()) {
+            id = Text_CustomerName.getText();
+            accountno = Text_Account.getText();
             type = common.AccountType.SAVINGS;
+            if ((Text_Interestrate.getText() != null) && (Text_Max.getText() != null)) {
+                linkedSavings = "";
+                interestRate = Double.parseDouble(Text_Interestrate.getText());
+                maxTransferAmountToChecking = Long.parseLong(Text_Max.getText());
+                newaccount();
+            }
         }
     }
 
-    private void add_account() {
+    public void newaccount() {
+        CommandDTO commandDTO = new CommandDTO(RequestType.NEWACCOUNT, id, accountno, type, linkedSavings, interestRate, maxTransferAmountToChecking);
+        System.out.println(commandDTO);
+        MainFrame.send(commandDTO, new CompletionHandler<Integer, ByteBuffer>() {
+            @Override
+            public void completed(Integer result, ByteBuffer attachment) {
+                if (result == -1) {
+                    return;
+                }
+                attachment.flip();
+                try {
+                    ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(attachment.array());
+                    ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+                    CommandDTO command = (CommandDTO) objectInputStream.readObject();
+                    System.out.println("3");
 
-        customerList = ReadCustomerFile("./Account.txt");
-        System.out.println(customerList);
-        balance = 0;
+                    SwingUtilities.invokeLater(() ->
+                    {
+                        String contentText = "";
+                        if (command.getResponseType() == ResponseType.SUCCESS)
+                        {
+                            contentText = "계좌가 생성되었습니다.";
+                            JOptionPane.showMessageDialog(null, contentText, "SUCCESS_MESSAGE", JOptionPane.PLAIN_MESSAGE);
+                        }
 
-        LocalDate today = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dateStr = today.format(formatter);
-        openDate = java.sql.Date.valueOf(today);
-
-        for(int i=0; i<customerList.size(); i++) {
-            if(customerList.get(i).getId().equals(id)) {
-                name = customerList.get(i).getName();
-            }
-        }
-
-        AccountVO newaccount = new AccountVO(name, accountno, type, balance, openDate);
-
-        if (type == common.AccountType.CHECKING) {
-
-            for(int i=0; i<customerList.size(); i++) {
-                if(customerList.get(i).getId().equals(id)) {
-                    accountlist = customerList.get(i).getAccountlist();
+                    });
+                } catch (IOException e)
+                {
+                    System.out.println("????");
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e)
+                {
+                    e.printStackTrace();
                 }
             }
-
-            for (AccountVO account : accountlist) {
-
-                if (account instanceof SavingsAccount) {
-
-                    SavingsAccount savingAccount = (SavingsAccount) account;
-                    System.out.println(savingAccount.getAccount().getAccountNo());
-                    System.out.println(linkedSavings);
-                    if (savingAccount.getAccount().getAccountNo().equals(linkedSavings)) {
-
-                        newaccount = new CheckingAccount(newaccount, savingAccount);
-                    }
-                }
+            @Override
+            public void failed(Throwable exc, ByteBuffer attachment)
+            {
             }
-
-        } else if (type == common.AccountType.SAVINGS) {
-            interestRate = Double.parseDouble(Text_Interestrate.getText());
-            maxTransferAmountToChecking = Long.parseLong(Text_Max.getText());
-            newaccount = (new SavingsAccount(newaccount, interestRate, maxTransferAmountToChecking));
-
-        }
-
-        System.out.println(newaccount);
-
-
-        for(int i=0; i<customerList.size(); i++) {
-            if(customerList.get(i).getId().equals(id)) {
-                customerList.get(i).addaccount(newaccount);
-            }
-        }
-        System.out.println(customerList);
-        SaveCustomerFile(customerList, "./Account.txt");
-
-
-    }
-
-    public List<CustomerVO> ReadCustomerFile(String filePath)
-    {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./Account.txt")))
-        {
-            List<CustomerVO> customers = (List<CustomerVO>) ois.readObject();
-            System.out.println("Objects read from " + filePath);
-            return customers;
-        }
-        catch (IOException | ClassNotFoundException e)
-        {
-            System.out.println("File not found. read x");
-            return null;
-        }
-    }
-
-    private void savedefaultlist() {
-        List<CustomerVO> defaultlist = new Vector<>();
-        defaultlist.add(new CustomerVO("202300001","광수","202300001", new AccountVO("광수", "202300001", common.AccountType.CHECKING, 100_000_000, Date.valueOf(LocalDate.now()))));
-        defaultlist.add(new CustomerVO("202300002","영철","202300002", new AccountVO("영철", "202300002", common.AccountType.CHECKING, 10_000_000, Date.valueOf(LocalDate.now()))));
-        defaultlist.add(new CustomerVO("202300003","영숙","202300003", new AccountVO("영숙", "202300003", common.AccountType.CHECKING, 5_000_000, Date.valueOf(LocalDate.now()))));
-        defaultlist.add(new CustomerVO("202300004","옥순","202300004", new AccountVO("옥순", "202300004", common.AccountType.CHECKING, 1_000_000, Date.valueOf(LocalDate.now()))));
-
-
-        SaveCustomerFile(defaultlist, "./Account.txt");
-    }
-
-    public void SaveCustomerFile(List<CustomerVO> customers, String filePath)
-    {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath)))
-        {
-            oos.writeObject(customers);
-            System.out.println("Objects saved to " + filePath);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
 }

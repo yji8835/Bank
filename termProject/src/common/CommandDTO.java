@@ -8,8 +8,8 @@ import common.AccountType;
 //*******************************************************************
 // Name : CommandDTO
 // Type : Class
-// Description :  ATM °ú Sever »çÀÌÀÇ Åë½Å ÇÁ·ÎÅäÄİÀ» Á¤ÀÇ ÇÏ±â À§ÇØ ÇÊ¿äÇÑ DTO(DataTransferObject)ÀÌ´Ù.
-//                »ı¼ºÀÚ¿Í, ¿ÀºêÁ§Æ® ³»ºÎ µ¥ÀÌÅÍ get, set µ¿ÀÛÀÌ ±¸ÇöµÇ¾î ÀÖ´Ù.
+// Description :  ATM ê³¼ Sever ì‚¬ì´ì˜ í†µì‹  í”„ë¡œí† ì½œì„ ì •ì˜ í•˜ê¸° ìœ„í•´ í•„ìš”í•œ DTO(DataTransferObject)ì´ë‹¤.
+//                ìƒì„±ìì™€, ì˜¤ë¸Œì íŠ¸ ë‚´ë¶€ ë°ì´í„° get, set ë™ì‘ì´ êµ¬í˜„ë˜ì–´ ìˆë‹¤.
 //*******************************************************************
 
 @SuppressWarnings("serial")
@@ -197,6 +197,10 @@ public class CommandDTO implements Serializable {
                 ", id='" + id + '\'' +
                 ", password='" + password + '\'' +
                 ", userAccountNo='" + userAccountNo + '\'' +
+                ", type='" + type + '\'' +
+                ", link='" + linkedsaving + '\'' +
+                ", interest='" + interestrate + '\'' +
+                ", max='" + max + '\'' +
                 ", receivedAccountNo='" + receivedAccountNo + '\'' +
                 ", amount=" + amount +
                 ", balance=" + balance +

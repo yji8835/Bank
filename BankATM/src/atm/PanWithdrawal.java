@@ -25,8 +25,8 @@ public class PanWithdrawal extends JPanel implements ActionListener
     private JLabel Label_Title;
 
 
-    private JLabel Label_Amount;
-    private JTextField Text_Amount;
+    private JLabel Label_Amount, Label_Account;
+    private JTextField Text_Amount, Text_Account;
 
 
     private JButton Btn_Transfer;
@@ -60,13 +60,24 @@ public class PanWithdrawal extends JPanel implements ActionListener
         setBounds(0,0,480,320);
 
 
-        Label_Title = new JLabel("???");
+        Label_Title = new JLabel("withdrawal");
         Label_Title.setBounds(0,0,480,40);
         Label_Title.setHorizontalAlignment(JLabel.CENTER);
         add(Label_Title);
 
+        Label_Account = new JLabel("출금 계좌");
+        Label_Account.setBounds(0,70,100,20);
+        Label_Account.setHorizontalAlignment(JLabel.CENTER);
+        add(Label_Account);
 
-        Label_Amount = new JLabel("???");
+        Text_Account = new JTextField();
+        Text_Account.setBounds(100,70,350,20);
+        Text_Account.setEditable(true);
+        Text_Account.setToolTipText("숫자만 입력하세요.");
+        add(Text_Account);
+
+
+        Label_Amount = new JLabel("amount");
         Label_Amount.setBounds(0,120,100,20);
         Label_Amount.setHorizontalAlignment(JLabel.CENTER);
         add(Label_Amount);
@@ -74,15 +85,15 @@ public class PanWithdrawal extends JPanel implements ActionListener
         Text_Amount = new JTextField();
         Text_Amount.setBounds(100,120,350,20);
         Text_Amount.setEditable(true);
-        Text_Amount.setToolTipText("????? ???");
+        Text_Amount.setToolTipText("숫자만 입력하세요.");
         add(Text_Amount);
 
-        Btn_Transfer = new JButton("???");
+        Btn_Transfer = new JButton("출금");
         Btn_Transfer.setBounds(100,250,70,20);
         Btn_Transfer.addActionListener(this);
         add(Btn_Transfer);
 
-        Btn_Close = new JButton("???");
+        Btn_Close = new JButton("닫기");
         Btn_Close.setBounds(250,250,70,20);
         Btn_Close.addActionListener(this);
         add(Btn_Close);
@@ -120,8 +131,9 @@ public class PanWithdrawal extends JPanel implements ActionListener
     //                ATMMain?? Send ????? ?????? ?????? ??? ??? ??????? ???? ??? ???.
     //*******************************************************************
     public void Withdrawal() {
+        String accountNo = Text_Account.getText();
         long amount = Long.parseLong(Text_Amount.getText());
-        CommandDTO commandDTO = new CommandDTO(RequestType.WITHDRAW, MainFrame.userId, amount);
+        CommandDTO commandDTO = new CommandDTO(RequestType.WITHDRAW, MainFrame.userId, accountNo, amount);
         MainFrame.send(commandDTO, new CompletionHandler<Integer, ByteBuffer>()
         {
             @Override

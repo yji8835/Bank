@@ -38,7 +38,7 @@ public class ManagerMain extends JFrame implements ActionListener {
     private AsynchronousSocketChannel channel;
     
     public ManagerMain() {
-        starManager();
+        startManager();
         InitGui();
         setVisible(true);
     }
@@ -49,8 +49,6 @@ public class ManagerMain extends JFrame implements ActionListener {
         setBounds(0, 0, 480, 320);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        
-
 
         Label_Title = new JLabel("Bank Manager");
         Label_Title.setFont(new Font("Arial", Font.PLAIN, 30));
@@ -241,7 +239,7 @@ public class ManagerMain extends JFrame implements ActionListener {
             Btn_Exit.setVisible(false);
         }
     }
-    private void starManager() {
+    private void startManager() {
         try {
             channelGroup = AsynchronousChannelGroup.withFixedThreadPool(Runtime.getRuntime().availableProcessors(), Executors.defaultThreadFactory());
             channel = AsynchronousSocketChannel.open(channelGroup);
