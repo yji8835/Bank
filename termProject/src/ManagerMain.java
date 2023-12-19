@@ -205,6 +205,11 @@ public class ManagerMain extends JFrame implements ActionListener {
             SetFrameUI(false);
             Pan_NewCustomer.setVisible(true);
         }
+        if(viewName.equals("OutputData") == true){
+            SetFrameUI(false);
+            PanOutputData pd = new PanOutputData(this);
+
+        }
         if(viewName.equals("Main") == true)
         {
             SetFrameUI(true);
