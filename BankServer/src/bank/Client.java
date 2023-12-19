@@ -12,10 +12,7 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 
 //*******************************************************************
@@ -86,6 +83,9 @@ public class Client {
                             break;
                         case VIEWACCOUNT:
                             viewaccount(command);
+                            break;
+                        case MANAGERLOGIN:
+                            Managerlogin(command);
                             break;
                         default:
                             break;
@@ -307,6 +307,42 @@ public class Client {
             commandDTO.setResponseType(ResponseType.FAILURE);
         }
         send(commandDTO);
+    }
+    private synchronized void Managerlogin(CommandDTO commandDTO) {
+        Map<String, String> ManagerCredentials = readManagerCredentials("./ManagerID.txt");
+
+        if(validateCredentials(ManagerCredentials, commandDTO.getId(), commandDTO.getPassword()))
+        {
+            commandDTO.setResponseType(ResponseType.SUCCESS);
+            handler.displayInfo("매니저 로그인");
+        } else {
+            commandDTO.setResponseType(ResponseType.FAILURE);
+            handler.displayInfo("매니저 로그인 실패");
+        }
+        send(commandDTO);
+    }
+    private Map<String, String> readManagerCredentials(String filePath) {
+        Map<String, String> userCredentials = new HashMap<>();
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(":");
+                if (parts.length == 2) {
+                    String username = parts[0].trim();
+                    String password = parts[1].trim();
+                    userCredentials.put(username, password);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return userCredentials;
+    }
+
+    private boolean validateCredentials(Map<String, String> userCredentials, String username, String password) {
+        return userCredentials.containsKey(username) && userCredentials.get(username).equals(password);
     }
 
     //*******************************************************************

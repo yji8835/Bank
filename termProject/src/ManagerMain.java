@@ -171,6 +171,7 @@ public class ManagerMain extends JFrame implements ActionListener {
         else if (e.getSource() == Btn_Exit)
         {
             dispose();
+            System.exit(0);
         }
     }
     public void display(String viewName) {
